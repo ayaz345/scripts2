@@ -19,13 +19,8 @@ if len(sys.argv) not in (3, 4, 5):
     )
     sys.exit()
 
-ignore = []
-skip = []
-if len(sys.argv) == 4:
-    ignore = sys.argv[3].split(",")
-if len(sys.argv) == 5:
-    skip = sys.argv[4].split(",")
-
+ignore = sys.argv[3].split(",") if len(sys.argv) == 4 else []
+skip = sys.argv[4].split(",") if len(sys.argv) == 5 else []
 URL_BASE = f"https://github.com/TheAlgorithms/{sys.argv[0]}/blob/HEAD"
 
 
@@ -42,7 +37,7 @@ def good_file_paths(top_dir: str = ".") -> Iterator[str]:
             if os.path.splitext(filename)[1] in sys.argv[2].split(","):
                 path = os.path.join(dir_path, filename).lstrip(".").lstrip("/")
                 for e in skip:
-                    path = path.replace(e + "/", "")
+                    path = path.replace(f"{e}/", "")
                     path = path.replace(e + "\\", "")
                 yield path
 
